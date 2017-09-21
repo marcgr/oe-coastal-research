@@ -396,10 +396,15 @@ require([
             ////////////////////////////////////
             // Filter
             ////////////////////////////////////
-            let filter = document.getElementById('filter-select');
+            var filter = document.getElementById('filter-select');
             on(filter, 'change', function (e) {
                 //featureTable.dataStore;
-                var userVal = e.srcElement.value === 'All' ? '' : e.srcElement.value.replace(/\ /g, '_');
+                var selectedVal = e.srcElement
+                    ? e.srcElement.value
+                    : e.target
+                        ? e.target.value
+                         : '';
+                var userVal = selectedVal.value === 'All' ? '' : selectedVal.replace(/\ /g, '_');
                 var oidFld = featureLayer.objectIdField;
                 var query = new Query();
                 var where = "field_1 <> 'Test 1'" + (userVal === '' ? '' : " AND field_6 LIKE '%" + userVal + "%'");
