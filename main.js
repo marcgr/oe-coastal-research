@@ -15,6 +15,7 @@ require([
     "dojo/ready",
     "dojo/on",
     "dojo/_base/lang",
+    "dojo/io-query",
     "dijit/registry",
     "dijit/form/Button",
     "dijit/layout/ContentPane",
@@ -27,13 +28,31 @@ require([
     "esri/symbols/SimpleLineSymbol"
 ], function (
     FeatureLayer, FeatureTable, Search, HomeButton, Extent, SimpleMarkerSymbol, SimpleLineSymbol, Color, Map,
-    domConstruct, dom, dojoNum, parser, ready, on, lang,
+    domConstruct, dom, dojoNum, parser, ready, on, lang, ioQuery,
     registry, Button, ContentPane, BorderContainer, TextBox, gracphiUtils, Query
 ) {
 
     parser.parse();
 
     ready(function () {
+
+        var uri = window.location.href;
+        var query = uri.substring(uri.indexOf("?") + 1, uri.length);
+        var queryObject = ioQuery.queryToObject(query);
+
+        var viewType = queryObject.view ? queryObject.view : 'compact';
+
+        if (viewType === 'compact') {
+            var topPanel = dijit.byId('top');
+            dijit.byId('container').removeChild(topPanel);
+            //window.setTimeout(function () {
+            //    var topPanel = dijit.byId('topPanel');
+            //    dijit.byId('container').removeChild(topPanel);
+            //    //dojo.byId('top').style.display = viewType === 'full' ? 'block' : 'none';
+            //}, 500);
+        }
+
+
         var coastal_research_fs_url = "https://services.arcgis.com/uUvqNMGPm7axC2dD/arcgis/rest/services/survey123_ffd27bbc80b544198433b60a5a33d710_fieldworker/FeatureServer/0";
 
         var map = new Map("map", {
@@ -327,13 +346,24 @@ require([
                 // use fieldInfos property to change field's label (column header),
                 // the editability of the field, and to format how field values are displayed
                 fieldInfos: field_infos,
+                menuFunctions: [
+            //Add new Export to CSV menu function
+            { label: "Export to CSV", callback: customExportCSV }
+                ]
             }, 'featureTableNode');
-
             featureTable.startup();
 
             ///////////////////////////////////
             // Feature Table Events
             ///////////////////////////////////
+
+            featureTable.on('load', function (evt) {
+                window.setTimeout(function () {
+                    dojo.byId('filteredProjects').innerHTML = featureTable.dataStore.totalCount;
+                    featureTable.featureLayer.name = 'Research Projects';
+                    //featureTable.refresh();
+                }, 500);
+            });
 
             featureTable.on("row-select", function (evt) {
                 if (evt.rows.length > 0) {
@@ -343,7 +373,7 @@ require([
 
             featureTable.on("row-deselect", function (evt) {
                 document.getElementById('detail-wrapper').style.display = 'none';
-                document.getElementById('no-selection').style.display = 'block';
+                document.getElementById('no-selection-wrapper').style.display = 'block';
             });
 
             ////////////////////////////////////
@@ -404,7 +434,8 @@ require([
                     : e.target
                         ? e.target.value
                          : '';
-                var userVal = selectedVal.value === 'All' ? '' : selectedVal.replace(/\ /g, '_');
+                var userVal = selectedVal === 'All' ? '' : selectedVal.replace(/\ /g, '_');
+                dojo.byId('selectedFilter').innerHTML = selectedVal === 'All' ? 'All Project Research Categories' : selectedVal;
                 var oidFld = featureLayer.objectIdField;
                 var query = new Query();
                 var where = "field_1 <> 'Test 1'" + (userVal === '' ? '' : " AND field_6 LIKE '%" + userVal + "%'");
@@ -412,6 +443,7 @@ require([
 
                 featureLayer.setDefinitionExpression(where);
                 featureLayer.queryIds(query, lang.hitch(this, function (objectIds) {
+                    dojo.byId('filteredProjects').innerHTML = objectIds.length;
                     featureTable.filterRecordsByIds(objectIds);
                 }));
 
@@ -421,7 +453,7 @@ require([
 
         function showProjectDetails(featureAttributes) {
             document.getElementById('detail-wrapper').style.display = 'block';
-            document.getElementById('no-selection').style.display = 'none';
+            document.getElementById('no-selection-wrapper').style.display = 'none';
             map.setLevel(map.getLevel() >= 8 ? map.getLevel() : 8);
             if (featureAttributes) {
                 let detail_obj = {};
@@ -438,7 +470,73 @@ require([
             }
         }
 
+        function customExportCSV(evt) {
+            //var gridData = myFeatureTable.selectedRows;
+            var data = featureTable.dataStore.data
+            var csv = convertArrayOfObjectsToCSV({
+                data: data,
+                columns: featureTable.columns
+            });
 
+            var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            var filename = "Exportdata.csv";
+            if (window.navigator.msSaveOrOpenBlob) { // IE hack; see http://msdn.microsoft.com/en-us/library/ie/hh779016.aspx
+                window.navigator.msSaveBlob(blob, filename);
+            } else {
+                var a = window.document.createElement('a');
+                a.href = window.URL.createObjectURL(blob);
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();  // IE: "Access is denied"; see: https://connect.microsoft.com/IE/feedback/details/797361/ie-10-treats-blob-url-as-cross-origin-and-denies-access
+
+                document.body.removeChild(a);
+            }
+
+            //if (!csv.match(/^data:text\/csv/i)) {
+            //    csv = 'data:text/csv;charset=utf-8,' + csv;
+            //}
+
+            //var encodedUri = encodeURI(csv);
+            //var link = document.createElement('a');
+            //link.setAttribute('href', encodedUri);
+            //link.setAttribute('download', "Exportdata.csv");
+            //link.click();
+
+        }
+
+        function convertArrayOfObjectsToCSV(value) {
+            var result, ctr, keys, columnDelimiter, lineDelimiter, data,aliasKeys;
+
+            data = value.data || null;
+            if (data == null || !data.length) {
+                return null;
+            }
+
+            columnDelimiter = value.columnDelimiter || ',';
+            lineDelimiter = value.lineDelimiter || '\n';
+
+            keys = value.columns.map(function(c){
+                return c.field;
+            });
+            aliasKeys = value.columns.map(function (c) {
+                return c.label;
+            })
+            result = '';
+            result += aliasKeys.join(columnDelimiter);
+            result += lineDelimiter;
+
+            data.forEach(function (item) {
+                ctr = 0;
+                keys.forEach(function (key) {
+                    if (ctr > 0)
+                        result += columnDelimiter;
+                    result += item.attributes[key];
+                    ctr++;
+                });
+                result += lineDelimiter;
+            });
+
+            return result;
+        }
     });
-
 });
