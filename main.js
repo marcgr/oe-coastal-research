@@ -3,6 +3,8 @@ require([
     "esri/dijit/FeatureTable",
     "esri/dijit/Search",
     "esri/dijit/HomeButton",
+    "esri/dijit/BasemapLayer", "esri/dijit/Basemap",
+    "esri/dijit/BasemapGallery",
     "esri/geometry/Extent",
     "esri/symbols/SimpleMarkerSymbol",
     "esri/symbols/SimpleLineSymbol",
@@ -27,7 +29,7 @@ require([
     "esri/symbols/SimpleMarkerSymbol",
     "esri/symbols/SimpleLineSymbol"
 ], function (
-    FeatureLayer, FeatureTable, Search, HomeButton, Extent, SimpleMarkerSymbol, SimpleLineSymbol, Color, Map,
+    FeatureLayer, FeatureTable, Search, HomeButton, BasemapLayer, Basemap, BasemapGallery, Extent, SimpleMarkerSymbol, SimpleLineSymbol, Color, Map,
     domConstruct, dom, dojoNum, parser, ready, on, lang, ioQuery,
     registry, Button, ContentPane, BorderContainer, TextBox, gracphiUtils, Query
 ) {
@@ -50,13 +52,25 @@ require([
             //    dijit.byId('container').removeChild(topPanel);
             //    //dojo.byId('top').style.display = viewType === 'full' ? 'block' : 'none';
             //}, 500);
+        } else {
+            //hide full screen button
+            dojo.byId('Fullscreen').style.display = 'none';
         }
 
 
         var coastal_research_fs_url = "https://services.arcgis.com/uUvqNMGPm7axC2dD/arcgis/rest/services/survey123_ffd27bbc80b544198433b60a5a33d710_fieldworker/FeatureServer/0";
 
+        var USGSNatMapLayer = new BasemapLayer({
+            url: "http://basemap.nationalmap.gov/arcgis/rest/services/USGSTopo/MapServer"
+        });
+        var USGSNatMapBasemap = new Basemap({
+            layers: [USGSNatMapLayer],
+            title: "USGS National Map",
+            thumbnailUrl: "http://www.arcgis.com/sharing/rest/content/items/6d9fa6d159ae4a1f80b9e296ed300767/info/thumbnail/national_map.jpg"
+        });
         var map = new Map("map", {
-            basemap: "dark-gray",
+            //basemap: "dark-gray",
+            basemap: USGSNatMapBasemap,
             center: [-122.45, 45], // longitude, latitude
             zoom: 4
         });
@@ -263,6 +277,29 @@ require([
                 map: map
             }, "HomeButton");
             home.startup();
+
+            ////////////////////////////////////
+            // Full screen
+            ////////////////////////////////////
+            var fullscreen = document.getElementById('Fullscreen');
+            on(fullscreen, 'click', function (e) {
+                window.open('index.html?view=full', '_blank');
+            });
+
+            ////////////////////////////////////
+            // Basemap Gallery
+            ////////////////////////////////////
+            //add the basemap gallery, in this case we'll display maps from ArcGIS.com including bing maps
+            var basemapGallery = new BasemapGallery({
+                showArcGISBasemaps: true,
+                map: map
+            }, "basemapGallery");
+            basemapGallery.startup();
+
+            basemapGallery.on("error", function (msg) {
+                console.log("basemap gallery error:  ", msg);
+            });
+
 
             ///////////////////////////////////
             // Feature Layer
@@ -505,7 +542,7 @@ require([
         }
 
         function convertArrayOfObjectsToCSV(value) {
-            var result, ctr, keys, columnDelimiter, lineDelimiter, data,aliasKeys;
+            var result, ctr, keys, columnDelimiter, lineDelimiter, data, aliasKeys;
 
             data = value.data || null;
             if (data == null || !data.length) {
@@ -515,7 +552,7 @@ require([
             columnDelimiter = value.columnDelimiter || ',';
             lineDelimiter = value.lineDelimiter || '\n';
 
-            keys = value.columns.map(function(c){
+            keys = value.columns.map(function (c) {
                 return c.field;
             });
             aliasKeys = value.columns.map(function (c) {

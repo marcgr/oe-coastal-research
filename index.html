@@ -27,6 +27,15 @@
             <div id="search"></div>
             <div id="map" class="map">
                 <div id="HomeButton"></div>
+                <div id="Fullscreen" title="View in new window in full view."></div>
+                <div style="position:absolute; left:20px; bottom:10px; z-Index:999;">
+                    <div data-dojo-type="dijit/TitlePane"
+                         data-dojo-props="title:'Basemaps', closable:false, open:false">
+                        <div data-dojo-type="dijit/layout/ContentPane" style="overflow:auto;">
+                            <div id="basemapGallery"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'trailing', splitter:true" style="height:50%; width:40%">

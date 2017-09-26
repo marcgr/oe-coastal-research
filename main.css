@@ -20,7 +20,7 @@ body,
 
 #detail-wrapper {
     font-size: .9em;
-     display: none;
+    display: none;
 }
 
 #detail-desc-wrapper {
@@ -44,36 +44,69 @@ body,
     z-index: 50;
 }
 
-#filter-bar{
-    padding:1em;
+
+#Fullscreen {
+    position: absolute;
+    top: 175px;
+    left: 28px;
+    width: 32px;
+    height: 32px;
+    z-index: 50;
+    background-image: url(img/fullscreen_grey_192x192.png) !important;
+    background-color: #a7a7a7;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 32px 32px;
+    border-radius: 5px;
+    padding: 1px;
 }
 
-select{
-    font-size:1em;
+    #Fullscreen:hover {
+        cursor: pointer;
+        background-color: #808080;
+    }
+
+
+#filter-bar {
+    padding: 1em;
 }
 
-#no-selection-wrapper{
-    position:relative;
+select {
+    font-size: 1em;
+}
+
+#no-selection-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    padding: 0 20px;
+    overflow: auto;
 }
 
 #no-selection {
     display: block;
-    margin:20% 10% auto 10%;
-    font-style:italic;
-    color:#a7a7a7;
-    text-align:center;
+    font-style: italic;
+    color: #a7a7a7;
+    text-align: center;
 }
 
-#no-selection h1{
-    width:50px;
-    margin:0 auto;
-    color:#a7a7a7;
-}
+    #no-selection h1 {
+        width: 50px;
+        margin: 0 auto;
+        color: #a7a7a7;
+    }
 
-#top{
-    /*display:none;*/
-}
-
-#filter-content-pane{
+#filter-content-pane {
     background-color: #F7F8F8;
+}
+
+.esriBasemapGalleryThumbnail {
+    height: 33px;
+    width: 50px;
+}
+
+.esriBasemapGalleryLabelContainer {
+    text-align: left;
+    font-size: .7em;
 }
