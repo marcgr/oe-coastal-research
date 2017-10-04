@@ -50,7 +50,7 @@ require([
             //window.setTimeout(function () {
             //    var topPanel = dijit.byId('topPanel');
             //    dijit.byId('container').removeChild(topPanel);
-            //    //dojo.byId('top').style.display = viewType === 'full' ? 'block' : 'none';
+            //    dojo.byId('top').style.display = viewType === 'full' ? 'block' : 'none';
             //}, 500);
         } else {
             //hide full screen button
@@ -60,17 +60,9 @@ require([
 
         var coastal_research_fs_url = "https://services.arcgis.com/uUvqNMGPm7axC2dD/arcgis/rest/services/survey123_ffd27bbc80b544198433b60a5a33d710_fieldworker/FeatureServer/0";
 
-        var USGSNatMapLayer = new BasemapLayer({
-            url: "http://basemap.nationalmap.gov/arcgis/rest/services/USGSTopo/MapServer"
-        });
-        var USGSNatMapBasemap = new Basemap({
-            layers: [USGSNatMapLayer],
-            title: "USGS National Map",
-            thumbnailUrl: "http://www.arcgis.com/sharing/rest/content/items/6d9fa6d159ae4a1f80b9e296ed300767/info/thumbnail/national_map.jpg"
-        });
         var map = new Map("map", {
-            //basemap: "dark-gray",
-            basemap: USGSNatMapBasemap,
+            basemap: "topo",
+            //basemap: USGSNatMapBasemap,
             center: [-122.45, 45], // longitude, latitude
             zoom: 4
         });
@@ -100,7 +92,7 @@ require([
                         format: {
                             template: "${value}"
                         },
-                        showTable: true,
+                        showTable: false,
                         showDetails: true
                     }, {
                         name: "field_4",
@@ -110,7 +102,7 @@ require([
                     }, {
                         name: "field_4_other",
                         alias: "Other - Institution",
-                        showTable: true,
+                        showTable: false,
                         showDetails: true
                     }, {
                         name: "field_5",
@@ -120,12 +112,12 @@ require([
                     }, {
                         name: "field_9",
                         alias: "Personal Research Category(s)",
-                        showTable: true,
+                        showTable: false,
                         showDetails: true
                     }, {
                         name: "field_6",
                         alias: "Project research category(s)",
-                        showTable: true,
+                        showTable: false,
                         showDetails: true
                     }, {
                         name: "field_10",
@@ -135,12 +127,12 @@ require([
                     }, {
                         name: "field_11",
                         alias: "Project start date",
-                        showTable: true,
+                        showTable: false,
                         showDetails: true
                     }, {
                         name: "field_12",
                         alias: "Project end date",
-                        showTable: true,
+                        showTable: false,
                         showDetails: true
                     }, {
                         name: "field_13",
@@ -150,12 +142,12 @@ require([
                     }, {
                         name: "field_13_other",
                         alias: "Other - Funding Source(s)",
-                        showTable: true,
+                        showTable: false,
                         showDetails: true
                     }, {
                         name: "field_14",
                         alias: "Affiliations and Partnerships",
-                        showTable: true,
+                        showTable: false,
                         showDetails: true
                     }, {
                         name: "field_15",
@@ -165,12 +157,12 @@ require([
                     }, {
                         name: "field_16",
                         alias: "Data Manager",
-                        showTable: true,
+                        showTable: false,
                         showDetails: true
                     }, {
                         name: "field_17",
                         alias: "Research description",
-                        showTable: true,
+                        showTable: false,
                         showDetails: true
                     }, {
                         name: "field_18",
@@ -180,7 +172,7 @@ require([
                     }, {
                         name: "field_18_other",
                         alias: "Other - Data availability",
-                        showTable: true,
+                        showTable: false,
                         showDetails: true
                     }, {
                         name: "field_19",
@@ -190,22 +182,22 @@ require([
                     }, {
                         name: "field_20",
                         alias: "Future plans for availability",
-                        showTable: true,
+                        showTable: false,
                         showDetails: true
                     }, {
                         name: "field_20_other",
                         alias: "Yes, explain - Future plans for availability",
-                        showTable: true,
+                        showTable: false,
                         showDetails: true
                     }, {
                         name: "field_22",
                         alias: "Status of data collection.",
-                        showTable: true,
+                        showTable: false,
                         showDetails: true
                     }, {
                         name: "field_22_other",
                         alias: "Other - Status of data collection.",
-                        showTable: true,
+                        showTable: false,
                         showDetails: true
                     }, {
                         name: "field_24",
@@ -220,22 +212,22 @@ require([
                     }, {
                         name: "field_26",
                         alias: "Type of technologies used",
-                        showTable: true,
+                        showTable: false,
                         showDetails: true
                     }, {
                         name: "field_26_other",
                         alias: "Other - Type of technologies used",
-                        showTable: true,
+                        showTable: false,
                         showDetails: true
                     }, {
                         name: "field_27",
                         alias: "Technology description",
-                        showTable: true,
+                        showTable: false,
                         showDetails: true
                     }, {
                         name: "field_28",
                         alias: "Associated metadata or a description of associated data",
-                        showTable: true,
+                        showTable: false,
                         showDetails: true
                     }, {
                         name: "field_32",
@@ -245,22 +237,22 @@ require([
                     }, {
                         name: "field_33",
                         alias: "Geographic type measured ",
-                        showTable: true,
+                        showTable: false,
                         showDetails: true
                     }, {
                         name: "field_33_other",
                         alias: "Other - Geographic type measured ",
-                        showTable: true,
+                        showTable: false,
                         showDetails: true
                     }, {
                         name: "field_36",
                         alias: "Additional information associated with this project.",
-                        showTable: true,
+                        showTable: false,
                         showDetails: true
                     }, {
                         name: "field_35",
                         alias: "Please suggest other researchers to include in this network.",
-                        showTable: true,
+                        showTable: false,
                         showDetails: true
                     }];
 
@@ -278,6 +270,8 @@ require([
             }, "HomeButton");
             home.startup();
 
+
+
             ////////////////////////////////////
             // Full screen
             ////////////////////////////////////
@@ -290,10 +284,45 @@ require([
             // Basemap Gallery
             ////////////////////////////////////
             //add the basemap gallery, in this case we'll display maps from ArcGIS.com including bing maps
+            var basemaps = [];
+
+            var imgeryLayer = new BasemapLayer({
+                url: "http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer"
+            });
+            var ImageryBasemap = new Basemap({
+                layers: [imgeryLayer],
+                title: "Imagery",
+                thumbnailUrl: "http://www.arcgis.com/sharing/rest/content/items/86de95d4e0244cba80f0fa2c9403a7b2/info/thumbnail/tempimagery.jpg"
+            });
+
+            var streetsLayer = new BasemapLayer({
+                url: "http://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer"
+            });
+            var StreetsBasemap = new Basemap({
+                layers: [streetsLayer],
+                title: "Streets",
+                thumbnailUrl: "http://www.arcgis.com/sharing/rest/content/items/d8855ee4d3d74413babfb0f41203b168/info/thumbnail/world_street_map.jpg"
+            });
+
+            var topoLayer = new BasemapLayer({
+                url: "http://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer"
+            });
+            var TopoBasemap = new Basemap({
+                layers: [topoLayer],
+                title: "Topographic",
+                thumbnailUrl: "http://www.arcgis.com/sharing/rest/content/items/6e03e8c26aad4b9c92a87c1063ddb0e3/info/thumbnail/topo_map_2.jpg"
+            });
+
+            basemaps.push(ImageryBasemap);
+            basemaps.push(StreetsBasemap);
+            basemaps.push(TopoBasemap);
+
             var basemapGallery = new BasemapGallery({
-                showArcGISBasemaps: true,
+                showArcGISBasemaps: false,
+                basemaps: basemaps,
                 map: map
             }, "basemapGallery");
+
             basemapGallery.startup();
 
             basemapGallery.on("error", function (msg) {
@@ -359,6 +388,19 @@ require([
             ///////////////////////////////////
 
             // create new FeatureTable and set its properties
+
+            var outFields = field_infos.map(function (field) {
+                return field.name;
+            });
+
+            var hiddenFields = field_infos
+                .filter(function (field) {
+                    return field.showTable === false;
+                })
+                .map(function (fieldmap) {
+                    return fieldmap.name;
+                });
+
             featureTable = new FeatureTable({
                 featureLayer: featureLayer,
                 map: map,
@@ -377,9 +419,12 @@ require([
                 },
                 // define order of available fields. If the fields are not listed in 'outFields'
                 // then they will not be available when the table starts.
-                outFields: ["field_8", "field_2", "field_3", "field_4", 'field_5',
-                    "field_6", "field_7", "field_1", "field_9", "field_10"
-                ],
+
+                //outFields: ["field_8", "field_2", "field_3", "field_4", 'field_5',
+                //    "field_6", "field_7", "field_1", "field_9", "field_10"
+                //],
+                outFields: outFields,
+                hiddenFields: hiddenFields,
                 // use fieldInfos property to change field's label (column header),
                 // the editability of the field, and to format how field values are displayed
                 fieldInfos: field_infos,
@@ -464,28 +509,85 @@ require([
             // Filter
             ////////////////////////////////////
             var filter = document.getElementById('filter-select');
+            var filterStatus = document.getElementById('filter-select-status');
             on(filter, 'change', function (e) {
-                //featureTable.dataStore;
-                var selectedVal = e.srcElement
-                    ? e.srcElement.value
-                    : e.target
-                        ? e.target.value
-                         : '';
-                var userVal = selectedVal === 'All' ? '' : selectedVal.replace(/\ /g, '_');
-                dojo.byId('selectedFilter').innerHTML = selectedVal === 'All' ? 'All Project Research Categories' : selectedVal;
-                var oidFld = featureLayer.objectIdField;
-                var query = new Query();
-                var where = "field_1 <> 'Test 1'" + (userVal === '' ? '' : " AND field_6 LIKE '%" + userVal + "%'");
-                query.where = where;
-
-                featureLayer.setDefinitionExpression(where);
-                featureLayer.queryIds(query, lang.hitch(this, function (objectIds) {
-                    dojo.byId('filteredProjects').innerHTML = objectIds.length;
-                    featureTable.filterRecordsByIds(objectIds);
-                }));
-
+                filterTable();
             });
+            on(filterStatus, 'change', function (e) {
+                filterTable();
+            });
+            //on(filter, 'change', function (e) {
+            //    //featureTable.dataStore;
+            //    var selectedVal = e.srcElement
+            //        ? e.srcElement.value
+            //        : e.target
+            //            ? e.target.value
+            //             : '';
+            //    var userVal = selectedVal === 'All' ? '' : selectedVal.replace(/\ /g, '_');
+            //    dojo.byId('selectedFilter').innerHTML = selectedVal === 'All' ? 'All Project Research Categories' : selectedVal;
+            //    var oidFld = featureLayer.objectIdField;
+            //    var query = new Query();
+            //    var where = "field_1 <> 'Test 1'" + (userVal === '' ? '' : " AND field_6 LIKE '%" + userVal + "%'");
+            //    query.where = where;
 
+            //    //featureLayer.setDefinitionExpression(where);
+            //    //featureLayer.queryIds(query, lang.hitch(this, function (objectIds) {
+            //    //    dojo.byId('filteredProjects').innerHTML = objectIds.length;
+            //    //    featureTable.filterRecordsByIds(objectIds);
+            //    //}));
+            //});
+        }
+
+        function filterTable() {
+            //get selected value from categories and status
+            var selectedCategory = document.getElementById('filter-select').value;
+            dojo.byId('selectedFilter').innerHTML = ['', 'All'].indexOf(selectedCategory) !== -1
+                ? 'All Project Research Categories'
+                : selectedCategory;
+            selectedCategory = selectedCategory === 'All'
+                ? ''
+                : selectedCategory.replace(/\ /g, '_');
+
+            var selectedStatus = document.getElementById('filter-select-status').value;
+            selectedStatus = selectedStatus === 'All' ? '' : selectedStatus;
+
+            dojo.byId('selectedStatusFilter').innerHTML = statusLookup(selectedStatus) !== ''
+                ? 'Status: ' + statusLookup(selectedStatus)
+                : '';
+
+            var oidFld = featureLayer.objectIdField;
+            var query = new Query();
+            var where = "field_1 <> 'Test 1'"
+                + (selectedCategory === ''
+                ? ''
+                : " AND field_6 LIKE '%" + selectedCategory + "%'")
+                + (selectedStatus === ''
+                ? ''
+                : " AND field_10 like '%" + selectedStatus + "%'");
+            query.where = where;
+            featureLayer.setDefinitionExpression(where);
+            featureLayer.queryIds(query, lang.hitch(this, function (objectIds) {
+                dojo.byId('filteredProjects').innerHTML = objectIds.length;
+                featureTable.filterRecordsByIds(objectIds);
+            }));
+        }
+
+        function statusLookup(status) {
+            switch (status) {
+                case 'choice0':
+                    return 'Completed';
+                    break;
+                case 'choice1':
+                    return 'Ongoing';
+                    break;
+                case 'choice2':
+                    return 'New / Unstarted';
+                    break;
+                case 'All':
+                default:
+                    return '';
+                    break;
+            }
         }
 
         function showProjectDetails(featureAttributes) {
@@ -503,7 +605,9 @@ require([
                 });
                 document.getElementById('detail-proj-title').innerHTML = detail_obj['Research Project Title'];
                 document.getElementById('detail-desc').innerHTML = detail_obj['Research description'];
-                document.getElementById('detail-categories').innerHTML = detail_obj['Project research category(s)'];
+                document.getElementById('detail-status').innerHTML = statusLookup(detail_obj['Project status']);
+                document.getElementById('detail-pi').innerHTML = detail_obj['Principle Investigator'];
+                document.getElementById('detail-institution').innerHTML = detail_obj['Institution'];
             }
         }
 
