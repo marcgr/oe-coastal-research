@@ -516,30 +516,11 @@ require([
             on(filterStatus, 'change', function (e) {
                 filterTable();
             });
-            //on(filter, 'change', function (e) {
-            //    //featureTable.dataStore;
-            //    var selectedVal = e.srcElement
-            //        ? e.srcElement.value
-            //        : e.target
-            //            ? e.target.value
-            //             : '';
-            //    var userVal = selectedVal === 'All' ? '' : selectedVal.replace(/\ /g, '_');
-            //    dojo.byId('selectedFilter').innerHTML = selectedVal === 'All' ? 'All Project Research Categories' : selectedVal;
-            //    var oidFld = featureLayer.objectIdField;
-            //    var query = new Query();
-            //    var where = "field_1 <> 'Test 1'" + (userVal === '' ? '' : " AND field_6 LIKE '%" + userVal + "%'");
-            //    query.where = where;
-
-            //    //featureLayer.setDefinitionExpression(where);
-            //    //featureLayer.queryIds(query, lang.hitch(this, function (objectIds) {
-            //    //    dojo.byId('filteredProjects').innerHTML = objectIds.length;
-            //    //    featureTable.filterRecordsByIds(objectIds);
-            //    //}));
-            //});
         }
 
         function filterTable() {
             //get selected value from categories and status
+            featureTable.clearFilter();
             var selectedCategory = document.getElementById('filter-select').value;
             dojo.byId('selectedFilter').innerHTML = ['', 'All'].indexOf(selectedCategory) !== -1
                 ? 'All Project Research Categories'
