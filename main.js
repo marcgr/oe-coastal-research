@@ -34,7 +34,7 @@ require([
     registry, Button, ContentPane, BorderContainer, TextBox, gracphiUtils, Query
 ) {
 
-    parser.parse();
+    //parser.parse();
 
     ready(function () {
 
@@ -46,7 +46,7 @@ require([
 
         if (viewType === 'compact') {
             var topPanel = dijit.byId('top');
-            dijit.byId('container').removeChild(topPanel);
+            dijit.byId('container-all').removeChild(topPanel);
             //window.setTimeout(function () {
             //    var topPanel = dijit.byId('topPanel');
             //    dijit.byId('container').removeChild(topPanel);
