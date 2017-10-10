@@ -124,3 +124,34 @@ fieldset{
 legend{
     margin-left:-2em;
 }
+
+#filter-wrapper{
+    margin-top:.8em;
+    font-size:.8em;
+    float:left;
+}
+
+#clear-filter-wrapper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    padding: 0 20px;
+    overflow: auto;
+    float:left;
+    width: 20%;
+}
+
+#clear-filter-btn{
+     background-color:#c34500;
+    color:white;
+    border-radius:4px;
+    padding:8px;
+    width: 80px;
+    text-align:center;
+}
+#clear-filter-btn:hover{
+    background-color:#802E01;
+    cursor:pointer;
+    text-decoration:underline;
+}

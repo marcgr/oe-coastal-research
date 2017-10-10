@@ -516,11 +516,21 @@ require([
             on(filterStatus, 'change', function (e) {
                 filterTable();
             });
+
+            var clearFilter = dojo.byId("clear-filter-btn");
+            on(clearFilter, 'click', function (e) {
+                filterTable(true);
+            })
         }
 
-        function filterTable() {
+        function filterTable(clear) {
             //get selected value from categories and status
-            featureTable.clearFilter();
+            //featureTable.clearFilter();
+            if (clear) {
+                featureTable.clearFilter();
+                dojo.byId('filter-select').value = 'All';
+                dojo.byId('filter-select-status').value = 'All';
+            }
             var selectedCategory = document.getElementById('filter-select').value;
             dojo.byId('selectedFilter').innerHTML = ['', 'All'].indexOf(selectedCategory) !== -1
                 ? 'All Project Research Categories'
