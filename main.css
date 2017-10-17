@@ -131,6 +131,29 @@ legend{
     float:left;
 }
 
+#title-wrapper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    padding: 0 20px;
+    overflow: auto;
+    float:left;
+    font-family: "Avenir Next","Helvetica Neue", Helvetica,Arial,sans-serif;
+}
+
+#title-wrapper img{
+    margin-right: 20px;
+    padding-top:20px;
+}
+
+#subtitle{
+    clear:both;
+    float:none;
+    color:#808080;
+    margin-top:-15px;
+}
+
 #clear-filter-wrapper{
     display: flex;
     justify-content: center;
