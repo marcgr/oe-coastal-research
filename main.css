@@ -178,3 +178,22 @@ legend{
     cursor:pointer;
     text-decoration:underline;
 }
+
+#add-research{
+    position:absolute;
+    right:20px;
+    top:50px;
+    text-align:center;
+    border-radius:4px;
+    margin-right:20px;
+    background-color:#26985d;
+    color:white;
+    padding:8px;
+    width:150px;
+}
+
+#add-research:hover{
+    background-color:#155534;
+    text-decoration:underline;
+    cursor:pointer;
+}
