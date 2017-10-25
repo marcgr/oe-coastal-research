@@ -34,7 +34,7 @@ require([
     registry, Button, ContentPane, BorderContainer, TextBox, gracphiUtils, Query
 ) {
 
-    //parser.parse();
+    parser.parse();
 
     ready(function () {
 
@@ -45,13 +45,13 @@ require([
         var viewType = queryObject.view ? queryObject.view : 'compact';
 
         if (viewType === 'compact') {
-            var topPanel = dijit.byId('top');
-            dijit.byId('container-all').removeChild(topPanel);
-            //window.setTimeout(function () {
-            //    var topPanel = dijit.byId('topPanel');
-            //    dijit.byId('container').removeChild(topPanel);
-            //    dojo.byId('top').style.display = viewType === 'full' ? 'block' : 'none';
-            //}, 500);
+            //var topPanel = dijit.byId('top');
+            //dijit.byId('container-all').removeChild(topPanel);
+            window.setTimeout(function () {
+                var topPanel = dijit.byId('top');
+                dijit.byId('container-all').removeChild(topPanel);
+                //dojo.byId('top').style.display = viewType === 'full' ? 'block' : 'none';
+            }, 150);
         } else {
             //hide full screen button
             dojo.byId('Fullscreen').style.display = 'none';
@@ -64,7 +64,6 @@ require([
 
         var map = new Map("map", {
             basemap: "topo",
-            //basemap: USGSNatMapBasemap,
             center: [-122.45, 45], // longitude, latitude
             zoom: 4
         });
@@ -596,7 +595,6 @@ require([
                 console.log("basemap gallery error:  ", msg);
             });
 
-
             ///////////////////////////////////
             // Feature Layer
             ///////////////////////////////////
@@ -796,7 +794,7 @@ require([
             var addResearch = dojo.byId("add-research");
             on(addResearch, 'click', function (e) {
                 window.open('https://survey123.arcgis.com/share/f15a151e1f8a4739b9e092c4188d3211', '_blank');
-            })
+            });
         }
 
         function filterTable(clear) {
