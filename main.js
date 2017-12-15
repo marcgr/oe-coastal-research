@@ -984,8 +984,14 @@ require([
 
                 document.getElementById('detail-start-date').innerHTML = detail_obj['Year project started/will start'];
                 document.getElementById('detail-status').innerHTML = statusLookup(detail_obj['Project status']);
-                document.getElementById('detail-pi').innerHTML = detail_obj['Principle Investigator'];
+                document.getElementById('detail-pi').innerHTML = detail_obj['Principal Investigator'];
                 document.getElementById('detail-institution').innerHTML = detail_obj['Institution'];
+                if (detail_obj['URL for accessible data']) {
+                    document.getElementById('data_url').style.display = 'block';
+                    document.getElementById('detail-data-url').innerHTML = '<a href="' + detail_obj['URL for accessible data'] + '" target="_blank">URL for accessible data</a>';
+                } else {
+                    document.getElementById('data_url').style.display = 'none';
+                }
             }
         }
 
