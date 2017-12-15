@@ -25,13 +25,12 @@ require([
     "dijit/form/TextBox",
     "esri/graphicsUtils",
     "esri/tasks/query",
-    "esri/symbols/PictureMarkerSymbol",
-    "esri/symbols/SimpleMarkerSymbol",
-    "esri/symbols/SimpleLineSymbol"
+    "esri/renderers/UniqueValueRenderer",
+    "esri/symbols/SimpleFillSymbol"
 ], function (
     FeatureLayer, FeatureTable, Search, HomeButton, BasemapLayer, Basemap, BasemapGallery, Extent, SimpleMarkerSymbol, SimpleLineSymbol, Color, Map,
     domConstruct, dom, dojoNum, parser, ready, on, lang, ioQuery,
-    registry, Button, ContentPane, BorderContainer, TextBox, gracphiUtils, Query
+    registry, Button, ContentPane, BorderContainer, TextBox, gracphiUtils, Query, UniqueValueRenderer, SimpleFillSymbol
 ) {
 
     parser.parse();
@@ -58,9 +57,13 @@ require([
         }
 
 
-        var coastal_research_fs_url = "https://services.arcgis.com/uUvqNMGPm7axC2dD/arcgis/rest/services/survey123_ffd27bbc80b544198433b60a5a33d710_fieldworker/FeatureServer/0";
+        //var coastal_research_fs_url = "https://services.arcgis.com/uUvqNMGPm7axC2dD/arcgis/rest/services/survey123_ffd27bbc80b544198433b60a5a33d710_fieldworker/FeatureServer/0";
 
         //var coastal_research_fs_url = "https://services.arcgis.com/uUvqNMGPm7axC2dD/arcgis/rest/services/survey123_f15a151e1f8a4739b9e092c4188d3211_fieldworker/FeatureServer/0";
+
+        //var coastal_research_fs_url = "https://services.arcgis.com/uUvqNMGPm7axC2dD/arcgis/rest/services/survey123_f15a151e1f8a4739b9e092c4188d3211_stakeholder/FeatureServer/0";
+
+        var coastal_research_fs_url = "https://services.arcgis.com/uUvqNMGPm7axC2dD/ArcGIS/rest/services/survey123_e3b56beaf4ea4296ab4845b4ffb73445_fieldworker/FeatureServer/0";
 
         var map = new Map("map", {
             basemap: "topo",
@@ -74,453 +77,470 @@ require([
 
         //OLD FIELD INFOS////
 
-        var field_infos = [
-                    {
-                        name: "field_8",
-                        alias: "Research Project Title",
-                        showTable: true,
-                        showDetails: true
-                    }, {
-                        name: "field_1",
-                        alias: "Name",
-                        showTable: true,
-                        showDetails: true
-                    }, {
-                        name: "field_2",
-                        alias: "Email Address",
-                        showTable: true,
-                        showDetails: true
-                    }, {
-                        name: "field_3",
-                        alias: "Phone Number",
-                        format: {
-                            template: "${value}"
-                        },
-                        showTable: false,
-                        showDetails: true
-                    }, {
-                        name: "field_4",
-                        alias: "Institution",
-                        showTable: true,
-                        showDetails: true
-                    }, {
-                        name: "field_4_other",
-                        alias: "Other - Institution",
-                        showTable: false,
-                        showDetails: true
-                    }, {
-                        name: "field_5",
-                        alias: "Department",
-                        showTable: true,
-                        showDetails: true
-                    }, {
-                        name: "field_9",
-                        alias: "Personal Research Category(s)",
-                        showTable: false,
-                        showDetails: true
-                    }, {
-                        name: "field_6",
-                        alias: "Project research category(s)",
-                        showTable: false,
-                        showDetails: true
-                    }, {
-                        name: "field_10",
-                        alias: "Project status",
-                        showTable: true,
-                        showDetails: true
-                    }, {
-                        name: "field_11",
-                        alias: "Project start date",
-                        showTable: false,
-                        showDetails: true
-                    }, {
-                        name: "field_12",
-                        alias: "Project end date",
-                        showTable: false,
-                        showDetails: true
-                    }, {
-                        name: "field_13",
-                        alias: "Funding Source(s)",
-                        showTable: true,
-                        showDetails: true
-                    }, {
-                        name: "field_13_other",
-                        alias: "Other - Funding Source(s)",
-                        showTable: false,
-                        showDetails: true
-                    }, {
-                        name: "field_14",
-                        alias: "Affiliations and Partnerships",
-                        showTable: false,
-                        showDetails: true
-                    }, {
-                        name: "field_15",
-                        alias: "Principle Investigator",
-                        showTable: true,
-                        showDetails: true
-                    }, {
-                        name: "field_16",
-                        alias: "Data Manager",
-                        showTable: false,
-                        showDetails: true
-                    }, {
-                        name: "field_17",
-                        alias: "Research description",
-                        showTable: false,
-                        showDetails: true
-                    }, {
-                        name: "field_18",
-                        alias: "Data availability",
-                        showTable: true,
-                        showDetails: true
-                    }, {
-                        name: "field_18_other",
-                        alias: "Other - Data availability",
-                        showTable: false,
-                        showDetails: true
-                    }, {
-                        name: "field_19",
-                        alias: "URL for accessible research",
-                        showTable: true,
-                        showDetails: true
-                    }, {
-                        name: "field_20",
-                        alias: "Future plans for availability",
-                        showTable: false,
-                        showDetails: true
-                    }, {
-                        name: "field_20_other",
-                        alias: "Yes, explain - Future plans for availability",
-                        showTable: false,
-                        showDetails: true
-                    }, {
-                        name: "field_22",
-                        alias: "Status of data collection.",
-                        showTable: false,
-                        showDetails: true
-                    }, {
-                        name: "field_22_other",
-                        alias: "Other - Status of data collection.",
-                        showTable: false,
-                        showDetails: true
-                    }, {
-                        name: "field_24",
-                        alias: "Type of Data",
-                        showTable: true,
-                        showDetails: true
-                    }, {
-                        name: "field_25",
-                        alias: "Data Description",
-                        showTable: true,
-                        showDetails: true
-                    }, {
-                        name: "field_26",
-                        alias: "Type of technologies used",
-                        showTable: false,
-                        showDetails: true
-                    }, {
-                        name: "field_26_other",
-                        alias: "Other - Type of technologies used",
-                        showTable: false,
-                        showDetails: true
-                    }, {
-                        name: "field_27",
-                        alias: "Technology description",
-                        showTable: false,
-                        showDetails: true
-                    }, {
-                        name: "field_28",
-                        alias: "Associated metadata or a description of associated data",
-                        showTable: false,
-                        showDetails: true
-                    }, {
-                        name: "field_32",
-                        alias: "Geographic area description",
-                        showTable: true,
-                        showDetails: true
-                    }, {
-                        name: "field_33",
-                        alias: "Geographic type measured ",
-                        showTable: false,
-                        showDetails: true
-                    }, {
-                        name: "field_33_other",
-                        alias: "Other - Geographic type measured ",
-                        showTable: false,
-                        showDetails: true
-                    }, {
-                        name: "field_36",
-                        alias: "Additional information associated with this project.",
-                        showTable: false,
-                        showDetails: true
-                    }, {
-                        name: "field_35",
-                        alias: "Please suggest other researchers to include in this network.",
-                        showTable: false,
-                        showDetails: true
-                    }];
+        //var field_infos = [
+        //            {
+        //                name: "field_8",
+        //                alias: "Research Project Title",
+        //                showTable: true,
+        //                showDetails: true
+        //            }, {
+        //                name: "field_1",
+        //                alias: "Name",
+        //                showTable: true,
+        //                showDetails: true
+        //            }, {
+        //                name: "field_2",
+        //                alias: "Email Address",
+        //                showTable: true,
+        //                showDetails: true
+        //            }, {
+        //                name: "field_3",
+        //                alias: "Phone Number",
+        //                format: {
+        //                    template: "${value}"
+        //                },
+        //                showTable: false,
+        //                showDetails: true
+        //            }, {
+        //                name: "field_4",
+        //                alias: "Institution",
+        //                showTable: true,
+        //                showDetails: true
+        //            }, {
+        //                name: "field_4_other",
+        //                alias: "Other - Institution",
+        //                showTable: false,
+        //                showDetails: true
+        //            }, {
+        //                name: "field_5",
+        //                alias: "Department",
+        //                showTable: true,
+        //                showDetails: true
+        //            }, {
+        //                name: "field_9",
+        //                alias: "Personal Research Category(s)",
+        //                showTable: false,
+        //                showDetails: true
+        //            }, {
+        //                name: "field_6",
+        //                alias: "Project research category(s)",
+        //                showTable: false,
+        //                showDetails: true
+        //            }, {
+        //                name: "field_10",
+        //                alias: "Project status",
+        //                showTable: true,
+        //                showDetails: true
+        //            }, {
+        //                name: "field_11",
+        //                alias: "Project start date",
+        //                showTable: false,
+        //                showDetails: true
+        //            }, {
+        //                name: "field_12",
+        //                alias: "Project end date",
+        //                showTable: false,
+        //                showDetails: true
+        //            }, {
+        //                name: "field_13",
+        //                alias: "Funding Source(s)",
+        //                showTable: true,
+        //                showDetails: true
+        //            }, {
+        //                name: "field_13_other",
+        //                alias: "Other - Funding Source(s)",
+        //                showTable: false,
+        //                showDetails: true
+        //            }, {
+        //                name: "field_14",
+        //                alias: "Affiliations and Partnerships",
+        //                showTable: false,
+        //                showDetails: true
+        //            }, {
+        //                name: "field_15",
+        //                alias: "Principle Investigator",
+        //                showTable: true,
+        //                showDetails: true
+        //            }, {
+        //                name: "field_16",
+        //                alias: "Data Manager",
+        //                showTable: false,
+        //                showDetails: true
+        //            }, {
+        //                name: "field_17",
+        //                alias: "Research description",
+        //                showTable: false,
+        //                showDetails: true
+        //            }, {
+        //                name: "field_18",
+        //                alias: "Data availability",
+        //                showTable: true,
+        //                showDetails: true
+        //            }, {
+        //                name: "field_18_other",
+        //                alias: "Other - Data availability",
+        //                showTable: false,
+        //                showDetails: true
+        //            }, {
+        //                name: "field_19",
+        //                alias: "URL for accessible research",
+        //                showTable: true,
+        //                showDetails: true
+        //            }, {
+        //                name: "field_20",
+        //                alias: "Future plans for availability",
+        //                showTable: false,
+        //                showDetails: true
+        //            }, {
+        //                name: "field_20_other",
+        //                alias: "Yes, explain - Future plans for availability",
+        //                showTable: false,
+        //                showDetails: true
+        //            }, {
+        //                name: "field_22",
+        //                alias: "Status of data collection.",
+        //                showTable: false,
+        //                showDetails: true
+        //            }, {
+        //                name: "field_22_other",
+        //                alias: "Other - Status of data collection.",
+        //                showTable: false,
+        //                showDetails: true
+        //            }, {
+        //                name: "field_24",
+        //                alias: "Type of Data",
+        //                showTable: true,
+        //                showDetails: true
+        //            }, {
+        //                name: "field_25",
+        //                alias: "Data Description",
+        //                showTable: true,
+        //                showDetails: true
+        //            }, {
+        //                name: "field_26",
+        //                alias: "Type of technologies used",
+        //                showTable: false,
+        //                showDetails: true
+        //            }, {
+        //                name: "field_26_other",
+        //                alias: "Other - Type of technologies used",
+        //                showTable: false,
+        //                showDetails: true
+        //            }, {
+        //                name: "field_27",
+        //                alias: "Technology description",
+        //                showTable: false,
+        //                showDetails: true
+        //            }, {
+        //                name: "field_28",
+        //                alias: "Associated metadata or a description of associated data",
+        //                showTable: false,
+        //                showDetails: true
+        //            }, {
+        //                name: "field_32",
+        //                alias: "Geographic area description",
+        //                showTable: true,
+        //                showDetails: true
+        //            }, {
+        //                name: "field_33",
+        //                alias: "Geographic type measured ",
+        //                showTable: false,
+        //                showDetails: true
+        //            }, {
+        //                name: "field_33_other",
+        //                alias: "Other - Geographic type measured ",
+        //                showTable: false,
+        //                showDetails: true
+        //            }, {
+        //                name: "field_36",
+        //                alias: "Additional information associated with this project.",
+        //                showTable: false,
+        //                showDetails: true
+        //            }, {
+        //                name: "field_35",
+        //                alias: "Please suggest other researchers to include in this network.",
+        //                showTable: false,
+        //                showDetails: true
+        //            }];
 
         //NEW FIELD INFOS////
-        //var field_infos = [
-        //    {
-        //        name: "field_8",
-        //        alias: "Research Project Title",
-        //        showTable: true,
-        //        showDetails: true
-        //    },
-        //    {
-        //        name: "field_15",
-        //        alias: "Principle Investigator First Name",
-        //        showTable: true,
-        //        showDetails: true
-        //    },
-        //    {
-        //        name: "field_51",
-        //        alias: "Principle Investigator Last Name",
-        //        showTable: true,
-        //        showDetails: true
-        //    },
-        //    {
-        //        name: "field_52",
-        //        alias: "Principle Investigator Email",
-        //        showTable: true,
-        //        showDetails: true
-        //    },
-        //    {
-        //        name: "field_1",
-        //        alias: "Survey Respondent",
-        //        showTable: false,
-        //        showDetails: true
-        //    },
-        //    {
-        //        name: "field_2",
-        //        alias: "Email Address",
-        //        showTable: true,
-        //        showDetails: true
-        //    },
-        //    {
-        //        name: "field_4",
-        //        alias: "Institution",
-        //        showTable: true,
-        //        showDetails: true
-        //    },
-        //    {
-        //        name: "field_4_other",
-        //        alias: "Other - Institution",
-        //        showTable: false,
-        //        showDetails: true
-        //    },
-        //    {
-        //        name: "field_5",
-        //        alias: "Department",
-        //        showTable: true,
-        //        showDetails: true
-        //    },
-        //    {
-        //        name: "field_9",
-        //        alias: "Personal Research Category(s)",
-        //        showTable: false,
-        //        showDetails: true
-        //    },
-        //    {
-        //        name: "field_6",
-        //        alias: "Project research category(s)",
-        //        showTable: false,
-        //        showDetails: true
-        //    },
-        //    {
-        //        name: "field_10",
-        //        alias: "Project status",
-        //        showTable: true,
-        //        showDetails: true
-        //    },
-        //    {
-        //        name: "field_13",
-        //        alias: "Funding Source(s)",
-        //        showTable: true,
-        //        showDetails: true
-        //    },
-        //    {
-        //        name: "field_13_other",
-        //        alias: "Other - Funding Source(s)",
-        //        showTable: false,
-        //        showDetails: true
-        //    },
-        //    {
-        //        name: "field_14",
-        //        alias: "Affiliations and Partnerships",
-        //        showTable: false,
-        //        showDetails: true
-        //    },
-        //    {
-        //        name: "field_17",
-        //        alias: "Research description",
-        //        showTable: false,
-        //        showDetails: true
-        //    },
-        //    {
-        //        name: "field_18",
-        //        alias: "Data availability",
-        //        showTable: true,
-        //        showDetails: true
-        //    },
-        //    {
-        //        name: "field_18_other",
-        //        alias: "Other - Data availability",
-        //        showTable: false,
-        //        showDetails: true
-        //    },
-        //    {
-        //        name: "field_19",
-        //        alias: "URL for accessible data",
-        //        showTable: true,
-        //        showDetails: true
-        //    },
-        //    {
-        //        name: "field_20",
-        //        alias: "Future plans for data availability",
-        //        showTable: false,
-        //        showDetails: true
-        //    },
-        //    {
-        //        name: "field_20_other",
-        //        alias: "Yes, explain - Future plans for data availability",
-        //        showTable: false,
-        //        showDetails: true
-        //    },
-        //    {
-        //        name: "field_24",
-        //        alias: "Type of Data",
-        //        showTable: true,
-        //        showDetails: true
-        //    },
-        //    {
-        //        name: "field_25",
-        //        alias: "Data Description",
-        //        showTable: true,
-        //        showDetails: true
-        //    },
-        //    {
-        //        name: "field_26",
-        //        alias: "Data collection method(s)",
-        //        showTable: false,
-        //        showDetails: true
-        //    },
-        //    {
-        //        name: "field_26_other",
-        //        alias: "Other - Data collection method(s)",
-        //        showTable: false,
-        //        showDetails: true
-        //    },
-        //    {
-        //        name: "field_27",
-        //        alias: "Method(s) description",
-        //        showTable: false,
-        //        showDetails: true
-        //    },
-        //    {
-        //        name: "field_32",
-        //        alias: "Geographic area description",
-        //        showTable: true,
-        //        showDetails: true
-        //    },
-        //    {
-        //        name: "field_33",
-        //        alias: "Geographic type measured ",
-        //        showTable: false,
-        //        showDetails: true
-        //    },
-        //    {
-        //        name: "field_33_other",
-        //        alias: "Other - Geographic type measured ",
-        //        showTable: false,
-        //        showDetails: true
-        //    },
-        //    {
-        //        name: "field_36",
-        //        alias: "Additional information associated with this project.",
-        //        showTable: false,
-        //        showDetails: true
-        //    },
-        //    {
-        //        name: "field_35",
-        //        alias: "Please suggest other researchers to include in this network.",
-        //        showTable: false,
-        //        showDetails: true
-        //    },
-        //    {
-        //        name: "field_37",
-        //        alias: "Does this project fit under the category of Coastal Hazards and Resilience?",
-        //        showTable: false,
-        //        showDetails: true
-        //    },
-        //    {
-        //        name: "field_45",
-        //        alias: "Which \"Coastal Hazards and Resilience\" subtopic describes this project?",
-        //        showTable: false,
-        //        showDetails: true
-        //    },
-        //    {
-        //        name: "field_43",
-        //        alias: "Does this project fit under the category of Marine Fisheries Research?",
-        //        showTable: false,
-        //        showDetails: true
-        //    },
-        //    {
-        //        name: "field_46",
-        //        alias: "Which \"Marine Fisheries\" subtopic describes this project?",
-        //        showTable: false,
-        //        showDetails: true
-        //    },
-        //    {
-        //        name: "field_42",
-        //        alias: "Does this project fit under the category of Coastal Pollution and Water Quality Research?",
-        //        showTable: false,
-        //        showDetails: true
-        //    },
-        //    {
-        //        name: "field_47",
-        //        alias: "Which \"Coastal Pollution and Water Quality\" subtopic describes this project?",
-        //        showTable: false,
-        //        showDetails: true
-        //    },
-        //    {
-        //        name: "field_41",
-        //        alias: "Does this project fit under the category of Coastal Human Uses and Benefits Research?",
-        //        showTable: false,
-        //        showDetails: true
-        //    },
-        //    {
-        //        name: "field_48",
-        //        alias: "Which \"Coastal Human Uses and Benefits\" subtopic describes this project?",
-        //        showTable: false,
-        //        showDetails: true
-        //    },
-        //    {
-        //        name: "field_40",
-        //        alias: "Does this project fit under the category of Marine Biophysical Conditions and Processes Research?",
-        //        showTable: false,
-        //        showDetails: true
-        //    },
-        //    {
-        //        name: "field_49",
-        //        alias: "Which \"Marine Biophysical Conditions and Processes \" subtopic describes this project?",
-        //        showTable: false,
-        //        showDetails: true
-        //    },
-        //    {
-        //        name: "field_39",
-        //        alias: "Does this project fit under the category of Marine Species, Ecosystems, and Functions Research?",
-        //        showTable: false,
-        //        showDetails: true
-        //    },
-        //    {
-        //        name: "field_50",
-        //        alias: "Which \"Marine Species, Ecosystems, and Functions \" subtopic describes this project?",
-        //        showTable: false,
-        //        showDetails: true
-        //    }
-        //];
+        var field_infos = [
+            {
+                name: "field_8",
+                alias: "Research Project Title",
+                showTable: true,
+                showDetails: true
+            },
+            {
+                name: "field_15",
+                alias: "Principal Investigator",
+                showTable: true,
+                showDetails: true
+            },
+            {
+                name: "field_51",
+                alias: "Principal Investigator Last Name",
+                showTable: false,
+                showDetails: true
+            },
+            {
+                name: "field_52",
+                alias: "Principal Investigator Email",
+                showTable: false,
+                showDetails: true
+            }, {
+                name: "field_56",
+                alias: "Year project started/will start",
+                showTable: true,
+                showDetails: true,
+                format: {
+                    template: "${value}"
+                }
+            },
+			{
+			    name: "field_57",
+			    alias: "Year project ended/will end",
+			    showTable: true,
+			    showDetails: true,
+			    format: {
+			        template: "${value}"
+			    }
+			},
+			{
+			    name: "field_1",
+			    alias: "Survey Respondent",
+			    showTable: false,
+			    showDetails: true
+			},
+            {
+                name: "field_2",
+                alias: "Email Address",
+                showTable: true,
+                showDetails: true
+            },
+            {
+                name: "field_4",
+                alias: "Institution",
+                showTable: true,
+                showDetails: true
+            },
+            {
+                name: "field_4_other",
+                alias: "Other - Institution",
+                showTable: false,
+                showDetails: true
+            },
+            {
+                name: "field_5",
+                alias: "Department",
+                showTable: true,
+                showDetails: true
+            },
+            {
+                name: "field_9",
+                alias: "Personal Research Category(s)",
+                showTable: false,
+                showDetails: true
+            },
+            {
+                name: "field_6",
+                alias: "Project research category(s)",
+                showTable: false,
+                showDetails: true
+            },
+            {
+                name: "field_10",
+                alias: "Project status",
+                showTable: true,
+                showDetails: true
+            },
+            {
+                name: "field_13",
+                alias: "Funding Source(s)",
+                showTable: true,
+                showDetails: true
+            },
+            {
+                name: "field_13_other",
+                alias: "Other - Funding Source(s)",
+                showTable: false,
+                showDetails: true
+            },
+            {
+                name: "field_14",
+                alias: "Affiliations and Partnerships",
+                showTable: false,
+                showDetails: true
+            },
+            {
+                name: "field_17",
+                alias: "Research description",
+                showTable: false,
+                showDetails: true
+            },
+            {
+                name: "field_18",
+                alias: "Data availability",
+                showTable: true,
+                showDetails: true
+            },
+            {
+                name: "field_18_other",
+                alias: "Other - Data availability",
+                showTable: false,
+                showDetails: true
+            },
+            {
+                name: "field_19",
+                alias: "URL for accessible data",
+                showTable: true,
+                showDetails: true
+            },
+            {
+                name: "field_20",
+                alias: "Future plans for data availability",
+                showTable: false,
+                showDetails: true
+            },
+            {
+                name: "field_20_other",
+                alias: "Yes, explain - Future plans for data availability",
+                showTable: false,
+                showDetails: true
+            },
+            {
+                name: "field_24",
+                alias: "Type of Data",
+                showTable: true,
+                showDetails: true
+            },
+            {
+                name: "field_25",
+                alias: "Data Description",
+                showTable: true,
+                showDetails: true
+            },
+            {
+                name: "field_26",
+                alias: "Data collection method(s)",
+                showTable: false,
+                showDetails: true
+            },
+            {
+                name: "field_26_other",
+                alias: "Other - Data collection method(s)",
+                showTable: false,
+                showDetails: true
+            },
+            {
+                name: "field_27",
+                alias: "Method(s) description",
+                showTable: false,
+                showDetails: true
+            },
+            {
+                name: "field_32",
+                alias: "Geographic area description",
+                showTable: true,
+                showDetails: true
+            },
+            {
+                name: "field_33",
+                alias: "Geographic type measured ",
+                showTable: false,
+                showDetails: true
+            },
+            {
+                name: "field_33_other",
+                alias: "Other - Geographic type measured ",
+                showTable: false,
+                showDetails: true
+            },
+            {
+                name: "field_36",
+                alias: "Additional information associated with this project.",
+                showTable: false,
+                showDetails: true
+            },
+            {
+                name: "field_35",
+                alias: "Please suggest other researchers to include in this network.",
+                showTable: false,
+                showDetails: true
+            },
+            {
+                name: "field_37",
+                alias: "Does this project fit under the category of Coastal Hazards and Resilience?",
+                showTable: false,
+                showDetails: true
+            },
+            {
+                name: "field_45",
+                alias: "Which \"Coastal Hazards and Resilience\" subtopic describes this project?",
+                showTable: false,
+                showDetails: true
+            },
+            {
+                name: "field_43",
+                alias: "Does this project fit under the category of Marine Fisheries Research?",
+                showTable: false,
+                showDetails: true
+            },
+            {
+                name: "field_46",
+                alias: "Which \"Marine Fisheries\" subtopic describes this project?",
+                showTable: false,
+                showDetails: true
+            },
+            {
+                name: "field_42",
+                alias: "Does this project fit under the category of Coastal Pollution and Water Quality Research?",
+                showTable: false,
+                showDetails: true
+            },
+            {
+                name: "field_47",
+                alias: "Which \"Coastal Pollution and Water Quality\" subtopic describes this project?",
+                showTable: false,
+                showDetails: true
+            },
+            {
+                name: "field_41",
+                alias: "Does this project fit under the category of Coastal Human Uses and Benefits Research?",
+                showTable: false,
+                showDetails: true
+            },
+            {
+                name: "field_48",
+                alias: "Which \"Coastal Human Uses and Benefits\" subtopic describes this project?",
+                showTable: false,
+                showDetails: true
+            },
+            {
+                name: "field_40",
+                alias: "Does this project fit under the category of Marine Biophysical Conditions and Processes Research?",
+                showTable: false,
+                showDetails: true
+            },
+            {
+                name: "field_49",
+                alias: "Which \"Marine Biophysical Conditions and Processes \" subtopic describes this project?",
+                showTable: false,
+                showDetails: true
+            },
+            {
+                name: "field_39",
+                alias: "Does this project fit under the category of Marine Species, Ecosystems, and Functions Research?",
+                showTable: false,
+                showDetails: true
+            },
+            {
+                name: "field_50",
+                alias: "Which \"Marine Species, Ecosystems, and Functions \" subtopic describes this project?",
+                showTable: false,
+                showDetails: true
+            }
+        ];
 
         map.on("load", loadMapTableWidgets);
 
@@ -598,6 +618,74 @@ require([
             ///////////////////////////////////
             // Feature Layer
             ///////////////////////////////////
+
+            //setup renderer
+            var uvrJson = {
+                "type": "uniqueValue",
+                "field1": "field_10",
+                "defaultSymbol": {
+                    "angle": 0,
+                    "color": [255, 0, 0, 255],
+                    "outline": {
+                        "color": [255, 255, 255, 255],
+                        "width": 1
+                    },
+                    "size": 8,
+                    "style": "esriSMSCircle",
+                    "type": "esriSMS",
+                    "xoffset": 0,
+                    "yoffset": 0
+                },
+                "uniqueValueInfos": [{
+                    "value": "choice0",
+                    "symbol": {
+                        "angle": 0,
+                        "color": [255, 0, 0, 255],
+                        "outline": {
+                            "color": [255, 255, 255, 255],
+                            "width": 1
+                        },
+                        "size": 8,
+                        "style": "esriSMSCircle",
+                        "type": "esriSMS",
+                        "xoffset": 0,
+                        "yoffset": 0
+                    }
+                }, {
+                    "value": "choice1",
+                    "symbol": {
+                        "angle": 0,
+                        "color": [0, 255, 0, 255],
+                        "outline": {
+                            "color": [255, 255, 255, 255],
+                            "width": 1
+                        },
+                        "size": 8,
+                        "style": "esriSMSCircle",
+                        "type": "esriSMS",
+                        "xoffset": 0,
+                        "yoffset": 0
+                    },
+                }, {
+                    "value": "choice2",
+                    "symbol": {
+                        "angle": 0,
+                        "color": [0, 0, 255, 255],
+                        "outline": {
+                            "color": [255, 255, 255, 255],
+                            "width": 1
+                        },
+                        "size": 8,
+                        "style": "esriSMSCircle",
+                        "type": "esriSMS",
+                        "xoffset": 0,
+                        "yoffset": 0
+                    }
+                }]
+            }
+            var renderer = new UniqueValueRenderer(uvrJson);
+
+
             featureLayer = new FeatureLayer(coastal_research_fs_url, {
                 mode: FeatureLayer.MODE_ONDEMAND,
                 outFields: ["*"],
@@ -605,6 +693,7 @@ require([
                 id: "fLayer"
             });
             featureLayer.setDefinitionExpression("field_1 <> 'Test 1'");
+            featureLayer.setRenderer(renderer);
 
             featureLayer.syncSelection = true;
 
@@ -793,7 +882,7 @@ require([
 
             var addResearch = dojo.byId("add-research");
             on(addResearch, 'click', function (e) {
-                window.open('https://survey123.arcgis.com/share/f15a151e1f8a4739b9e092c4188d3211', '_blank');
+                window.open('https://survey123.arcgis.com/share/e3b56beaf4ea4296ab4845b4ffb73445', '_blank');
             });
         }
 
@@ -870,6 +959,10 @@ require([
                 });
                 document.getElementById('detail-proj-title').innerHTML = detail_obj['Research Project Title'];
                 document.getElementById('detail-desc').innerHTML = detail_obj['Research description'];
+                //var startTime = new Date(parseInt(detail_obj['Year project started/will start']));
+                //var formattedTime = startTime.toLocaleDateString();
+
+                document.getElementById('detail-start-date').innerHTML = detail_obj['Year project started/will start'];
                 document.getElementById('detail-status').innerHTML = statusLookup(detail_obj['Project status']);
                 document.getElementById('detail-pi').innerHTML = detail_obj['Principle Investigator'];
                 document.getElementById('detail-institution').innerHTML = detail_obj['Institution'];
