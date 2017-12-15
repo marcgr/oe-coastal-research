@@ -900,7 +900,7 @@ require([
                 : selectedCategory;
             selectedCategory = selectedCategory === 'All'
                 ? ''
-                : selectedCategory.replace(/\ /g, '_');
+                : selectedCategory; //.replace(/\ /g, '_');
 
             var selectedStatus = document.getElementById('filter-select-status').value;
             selectedStatus = selectedStatus === 'All' ? '' : selectedStatus;
@@ -911,10 +911,11 @@ require([
 
             var oidFld = featureLayer.objectIdField;
             var query = new Query();
+
             var where = "field_1 <> 'Test 1'"
                 + (selectedCategory === ''
                 ? ''
-                : " AND field_6 LIKE '%" + selectedCategory + "%'")
+                : " AND " + projectCategoryLookup(selectedCategory) + " = 'choice0'")
                 + (selectedStatus === ''
                 ? ''
                 : " AND field_10 like '%" + selectedStatus + "%'");
@@ -924,6 +925,25 @@ require([
                 dojo.byId('filteredProjects').innerHTML = objectIds.length;
                 featureTable.filterRecordsByIds(objectIds);
             }));
+        }
+
+        function projectCategoryLookup(category) {
+            switch (category) {
+                case "Coastal Hazards and Resilience":
+                    return "field_37";
+                case "Marine Fisheries Research":
+                    return "field_43";
+                case "Coastal Pollution and Water Quality Research":
+                    return "field_42";
+                case "Coastal Human Uses and Benefits Research":
+                    return "field_41";
+                case "Marine Biophysical Conditions and Processes Research":
+                    return "field_40";
+                case "Marine Species, Ecosystems, and Functions Research":
+                    return "field_39";
+                default:
+                    return "";
+            }
         }
 
         function statusLookup(status) {
