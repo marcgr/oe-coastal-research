@@ -290,7 +290,7 @@ require([
                 showDetails: true
             }, {
                 name: "field_56",
-                alias: "Year project started/will start",
+                alias: "Start Year",
                 showTable: true,
                 showDetails: true,
                 format: {
@@ -299,7 +299,7 @@ require([
             },
 			{
 			    name: "field_57",
-			    alias: "Year project ended/will end",
+			    alias: "End Year",
 			    showTable: true,
 			    showDetails: true,
 			    format: {
@@ -830,7 +830,7 @@ require([
 
             sources.push({
                 featureLayer: featureLayer,
-                searchFields: ["field_8", "field_9", "field_10"],
+                searchFields: ["field_8", "field_10"],
                 displayField: "field_8",
                 exactMatch: false,
                 outFields: ["field_8"],
@@ -982,7 +982,7 @@ require([
                 //var startTime = new Date(parseInt(detail_obj['Year project started/will start']));
                 //var formattedTime = startTime.toLocaleDateString();
 
-                document.getElementById('detail-start-date').innerHTML = detail_obj['Year project started/will start'];
+                document.getElementById('detail-start-date').innerHTML = detail_obj['Start Year'];
                 document.getElementById('detail-status').innerHTML = statusLookup(detail_obj['Project status']);
                 document.getElementById('detail-pi').innerHTML = detail_obj['Principal Investigator'];
                 document.getElementById('detail-institution').innerHTML = detail_obj['Institution'];
