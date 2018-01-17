@@ -856,6 +856,7 @@ require([
                     row_idx = row.attributes['field_8'] === e.result.feature.attributes['field_8'] ? idx : row_idx;
                 })
                 featureTable.selectRows(row_idx, true);
+                map.setLevel(8);
                 console.log('selected result', e);
             });
 
