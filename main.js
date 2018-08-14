@@ -830,7 +830,7 @@ require([
 
             sources.push({
                 featureLayer: featureLayer,
-                searchFields: ["field_8", "field_10"],
+                searchFields: ["field_8", "field_10", "field_17","field_32"], // Project Title, Status, Description, Geographic Area
                 displayField: "field_8",
                 exactMatch: false,
                 outFields: ["field_8"],
