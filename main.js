@@ -573,30 +573,30 @@ require([
             var basemaps = [];
 
             var imgeryLayer = new BasemapLayer({
-                url: "http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer"
+                url: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer"
             });
             var ImageryBasemap = new Basemap({
                 layers: [imgeryLayer],
                 title: "Imagery",
-                thumbnailUrl: "http://www.arcgis.com/sharing/rest/content/items/86de95d4e0244cba80f0fa2c9403a7b2/info/thumbnail/tempimagery.jpg"
+                thumbnailUrl: "https://www.arcgis.com/sharing/rest/content/items/86de95d4e0244cba80f0fa2c9403a7b2/info/thumbnail/tempimagery.jpg"
             });
 
             var streetsLayer = new BasemapLayer({
-                url: "http://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer"
+                url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer"
             });
             var StreetsBasemap = new Basemap({
                 layers: [streetsLayer],
                 title: "Streets",
-                thumbnailUrl: "http://www.arcgis.com/sharing/rest/content/items/d8855ee4d3d74413babfb0f41203b168/info/thumbnail/world_street_map.jpg"
+                thumbnailUrl: "https://www.arcgis.com/sharing/rest/content/items/d8855ee4d3d74413babfb0f41203b168/info/thumbnail/world_street_map.jpg"
             });
 
             var topoLayer = new BasemapLayer({
-                url: "http://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer"
+                url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer"
             });
             var TopoBasemap = new Basemap({
                 layers: [topoLayer],
                 title: "Topographic",
-                thumbnailUrl: "http://www.arcgis.com/sharing/rest/content/items/6e03e8c26aad4b9c92a87c1063ddb0e3/info/thumbnail/topo_map_2.jpg"
+                thumbnailUrl: "https://www.arcgis.com/sharing/rest/content/items/6e03e8c26aad4b9c92a87c1063ddb0e3/info/thumbnail/topo_map_2.jpg"
             });
 
             basemaps.push(ImageryBasemap);
